@@ -1,4 +1,4 @@
 proxmox_api_user     = "username"
 proxmox_api_password = "password"
-ssh_username = "packer"
+ssh_username = "root"
 ssh_password = "packer"

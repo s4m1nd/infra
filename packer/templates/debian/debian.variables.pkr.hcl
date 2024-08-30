@@ -74,7 +74,7 @@ variable "proxmox_node" {
 
 variable "ssh_username" {
   type    = string
-  default = "packer"
+  default = "root"
 }
 
 variable "ssh_password" {
