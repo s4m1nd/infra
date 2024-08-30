@@ -58,22 +58,21 @@ echo "vars/debian.pkrvars.hcl has been updated."
 
 # Prompt for debian.pkrvars.hcl values
 echo -e "\nConfiguring debian.pkrvars.hcl"
-prompt_for_value proxmox_url "Enter Proxmox URL" "https://13.13.0.129:8006/api2/json"
 prompt_for_value proxmox_username "Enter Proxmox username" "root@pam"
 prompt_for_value proxmox_password "Enter Proxmox password" "your_password_here"
-prompt_for_value proxmox_node_name "Enter Proxmox node name" "pmx"
 prompt_for_value template_name "Enter template name" "debian-11-cloudinit-template"
-prompt_for_value template_description "Enter template description" "Debian 11 Cloud-Init Template"
+prompt_for_value ssh_username "Enter ssh username" "packer"
+prompt_for_value ssh_password "Enter ssh password" "packer"
+
 
 # Write to debian.pkrvars.hcl
 echo "Writing to debian.pkrvars.hcl"
 cat > debian.pkrvars.hcl <<EOL
-proxmox_url           = "${proxmox_url}"
-proxmox_username      = "${proxmox_username}"
-proxmox_password      = "${proxmox_password}"
-proxmox_node_name     = "${proxmox_node_name}"
+proxmox_api_user      = "${proxmox_username}"
+proxmox_api_password  = "${proxmox_password}"
 template_name         = "${template_name}"
-template_description  = "${template_description}"
+ssh_username          = "${ssh_username}"
+ssh_password          = "${ssh_password}"
 EOL
 
 echo "debian.pkrvars.hcl has been updated."
