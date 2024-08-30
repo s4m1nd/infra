@@ -71,5 +71,5 @@ variable "vm_name" {
 }
 
 variable "node" {
-  type = "string"
+  type = string
 }
