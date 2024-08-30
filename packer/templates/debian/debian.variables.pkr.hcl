@@ -86,3 +86,8 @@ variable "iso_file" {
   type      = string
   default   = "local:iso/debian-11.10.0-amd64-netinst.iso"
 }
+
+variable "template_name" {
+  type      = string
+  default   = "debian-11-cloudinit-template"
+}
