@@ -36,6 +36,8 @@ prompt_for_value disk_format "Enter disk format" "raw"
 prompt_for_value network_vlan "Enter network VLAN" "10"
 prompt_for_value iso_storage_pool "Enter ISO storage pool" "local:iso"
 prompt_for_value iso_file "Enter ISO file" "local:iso/debian-11.10.0-amd64-netinst.iso"
+prompt_for_value ssh_username "Enter ssh username" "packer"
+prompt_for_value ssh_password "Enter ssh password" "packer"
 
 # Write to vars/debian.pkrvars.hcl
 echo "Writing to vars/debian.pkrvars.hcl"
@@ -52,6 +54,8 @@ disk_format       = "${disk_format}"
 network_vlan      = "${network_vlan}"
 iso_storage_pool  = "${iso_storage_pool}"
 iso_file          = "${iso_file}"
+ssh_username      = "${ssh_username}"
+ssh_password      = "${ssh_password}"
 EOL
 
 echo "vars/debian.pkrvars.hcl has been updated."
