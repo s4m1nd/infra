@@ -1,24 +1,24 @@
 resource "proxmox_vm_qemu" "debian-vm-1" {
     
-    target_node = "pmx"
+    target_node = var.node # "pmx"
     # vmid = "100"
-    name = "debian-vm-1"
-    desc = "debian server"
+    name = var.vm_name # "debian-vm-1"
+    desc = var.vm_desc # "debian server"
 
     onboot = true 
 
-    clone = "pckr-tmpl-debian-11"
+    clone = var.clone_template # "pckr-tmpl-debian-11"
 
     # VM System Settings
     agent = 1
     
     # VM CPU Settings
-    cores = 1
-    sockets = 1
-    cpu = "host"    
+    cores = var.cpu_cores # 1
+    sockets = var.cpu_sockets # 1
+    cpu = "host"
     
     # VM Memory Settings
-    memory = 2048
+    memory = var.memory # 2048
 
     # VM Network Settings
     network {
@@ -33,7 +33,7 @@ resource "proxmox_vm_qemu" "debian-vm-1" {
     ipconfig0 = "ip=dhcp"
     
     # (Optional) Default User
-    ciuser = "s4m1nd"
+    ciuser = var.ciuser # s4m1nd
     
     # (Optional) Add your SSH KEY
     sshkeys = <<EOF

@@ -1,4 +1,0 @@
-proxmox_api_user     = "username"
-proxmox_api_password = "password"
-ssh_username = "debian"
-ssh_password = "password"
