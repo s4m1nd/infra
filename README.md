@@ -1,2 +1,1 @@
-# my dotfiles and NixOS configuration files
-
+# my dotfiles, nixos configuration, terraform, packer, ansible, etc.

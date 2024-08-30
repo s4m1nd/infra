@@ -1,1 +1,41 @@
+# virt manager xml
 win10-with-values.xml
+
+# Ignore all .pkrvars.hcl files except samples
+*.pkrvars.hcl
+!*.pkrvars.hcl.sample
+
+# ignore all .tfvars files except samples
+*.tfvars
+!*.tfvars.sample
+
+# Ignore Packer cache
+packer_cache/
+
+# Ignore any potential log files
+*.log
+
+# Ignore any potential temporary files
+*.tmp
+*.temp
+
+# Ignore any potential key files
+*.pem
+*.key
+
+# Ignore any potential environment files
+.env
+
+# Ignore archives
+*.tar.gz
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.tgz
+*.bz2
+
+# ignore .terraform
+.terraform/
+
