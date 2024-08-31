@@ -28,48 +28,35 @@ resource "proxmox_vm_qemu" "debian-vm-1" {
 
     # VM Cloud-Init Settings
     os_type = "cloud-init"
-
-    # (Optional) IP Address and Gateway
     ipconfig0 = "ip=dhcp"
-    
-    # (Optional) Default User
     ciuser = var.ciuser # s4m1nd
-    
-    # (Optional) Add your SSH KEY
-    sshkeys = <<EOF
-    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0M4k8rPNVJjDhEsUpGjzEms3DHixD0jdGHQW7Ee1W7BjygEdsPkJWPiqZShzR8dsOTYpDHYF4wpcVyfVkBQ/2tnecC6CQGSQmyT/zjPSGWn7mF5R6R/xBjYF5TpSLm+fR26lCqdJJNXPJVHQxVsvuS2OJMrKzJbmA7LGzG2HB01T5Je6rWDDBGmGmgGOrxaHWWhxyQl1XdYPAlli3vHbEcrydyOZvs1z+2vFZ+29WFR/peRIVmTULssr0RNZ3+XsFk2FqdVZygMjC7PFBKk77KVPNUdB6qHsCjlbkctJ4laxqVC5k3qqEpUQmtpkFos9kHaWiMrVywAXvcq+tj4PRaNN2v+32OeC8KsWEEDGd/8UZR/2LEFvmo99ER3u2Uy2A5Rque1zQEgvWd07+DP4oh7WmHa7qlgD+ieZm41Ark8fpra24igiigogZrJWc+6ec+QDB4tQgJeQL/BQZp0b+WObiwiJDZDFsbjMZ77SynONWEG/sllUMVpeG08pbABRo1qNGCkpfGYw3kMJ7+TM7vIvGAUkz6iNme0qS85vgSTOA7LtIAGs04/uwp/hTthFv0ogqcF5ZNgZlyNee1dFEGveFHrqel33MsUZn6fwi4WkWZSlp4gbjt0n43i9H1OpLMM4Ug85li5QCQcfI0Pr7OgWkikmSstnxGlc9SYdnxQ== s4m1nd@raspberrypi
-    EOF
+    sshkeys = var.ssh_public_key 
+
 }
 
+provisioner "remote-exec" {
+        inline = [
+            "echo $(hostname -I | cut -d' ' -f1) > /tmp/vm_ip"
+        ]
 
-variable "ciuser" {
-    type = string
+        connection {
+            type        = "ssh"
+            user        = var.ciuser
+            private_key = file("~/.ssh/id_ed25519")  # Adjust this path to your SSH private key
+            host        = self.ssh_host
+        }
+    }
+
+    provisioner "local-exec" {
+        command = "scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${var.ciuser}@${self.ssh_host}:/tmp/vm_ip ./vm_ip"
+    }
 }
 
-variable "memory" {
-  type = number
+data "local_file" "vm_ip" {
+    filename = "${path.module}/vm_ip"
+    depends_on = [proxmox_vm_qemu.debian-vm-1]
 }
 
-variable "cpu_sockets" {
-  type = number
-}
-
-variable "cpu_cores" {
-  type = number
-}
-
-variable "clone_template" {
-  type = string
-}
-
-variable "vm_desc" {
-  type = string
-}
-
-variable "vm_name" {
-  type = string
-}
-
-variable "node" {
-  type = string
+output "vm_ip" {
+    value = trimspace(data.local_file.vm_ip.content)
 }

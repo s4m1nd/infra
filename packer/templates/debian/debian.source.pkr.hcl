@@ -6,7 +6,7 @@ source "proxmox-iso" "debian-11" {
   node                     = var.proxmox_node
 
   vm_name                 = var.template_name 
-  # template_description    = "Debian 11 Bullseye Packer Template -- Created: ${formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())}"
+  template_description    = "Debian 11 Bullseye Packer Template -- Created: ${formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())}"
   # vm_id                   = var.vmid
   os                      = "l26"
   cpu_type                = var.cpu_type

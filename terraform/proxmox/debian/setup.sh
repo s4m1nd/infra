@@ -48,6 +48,7 @@ prompt_for_value cpu_cores "Enter number of CPU cores"
 prompt_for_value cpu_sockets "Enter number of CPU sockets"
 prompt_for_value memory "Enter memory in MB"
 prompt_for_value ciuser "Enter default user"
+prompt_for_value ssh_public_key "Enter SSH public key"
 
 # Update credentials.auto.tfvars with new values
 echo "Updating credentials.auto.tfvars"
@@ -63,6 +64,7 @@ cpu_cores = ${cpu_cores}
 cpu_sockets = ${cpu_sockets}
 memory = ${memory}
 ciuser = "${ciuser}"
+ssh_public_key = "${ssh_public_key}"
 EOL
 
 echo "credentials.auto.tfvars has been updated."

@@ -26,7 +26,10 @@ echo "Setting up Packer configuration..."
 echo "Configuring vars/debian.pkrvars.hcl"
 prompt_for_value proxmox_host "Enter Proxmox host" "13.13.0.129:8006"
 prompt_for_value proxmox_node "Enter Proxmox node" "pmx"
+prompt_for_value proxmox_username "Enter Proxmox username" "root@pam"
+prompt_for_value proxmox_password "Enter Proxmox password" "your_password_here"
 prompt_for_value vmid "Enter VMID" "200"
+prompt_for_value template_name "Enter template name" "debian-11-cloudinit-template"
 prompt_for_value cpu_type "Enter CPU type" "kvm64"
 prompt_for_value cores "Enter number of cores" "2"
 prompt_for_value memory "Enter memory in MB" "2048"
@@ -44,6 +47,9 @@ echo "Writing to vars/debian.pkrvars.hcl"
 cat > vars/debian.pkrvars.hcl <<EOL
 proxmox_host      = "${proxmox_host}"
 proxmox_node      = "${proxmox_node}"
+proxmox_api_user      = "${proxmox_username}"
+proxmox_api_password  = "${proxmox_password}"
+template_name         = "${template_name}"
 vmid              = "${vmid}"
 cpu_type          = "${cpu_type}"
 cores             = "${cores}"
@@ -59,26 +65,5 @@ ssh_password      = "${ssh_password}"
 EOL
 
 echo "vars/debian.pkrvars.hcl has been updated."
-
-# Prompt for debian.pkrvars.hcl values
-echo -e "\nConfiguring debian.pkrvars.hcl"
-prompt_for_value proxmox_username "Enter Proxmox username" "root@pam"
-prompt_for_value proxmox_password "Enter Proxmox password" "your_password_here"
-prompt_for_value template_name "Enter template name" "debian-11-cloudinit-template"
-prompt_for_value ssh_username "Enter ssh username" "packer"
-prompt_for_value ssh_password "Enter ssh password" "packer"
-
-
-# Write to debian.pkrvars.hcl
-echo "Writing to debian.pkrvars.hcl"
-cat > debian.pkrvars.hcl <<EOL
-proxmox_api_user      = "${proxmox_username}"
-proxmox_api_password  = "${proxmox_password}"
-template_name         = "${template_name}"
-ssh_username          = "${ssh_username}"
-ssh_password          = "${ssh_password}"
-EOL
-
-echo "debian.pkrvars.hcl has been updated."
 
 echo "Setup complete. You can now run your Packer commands."
