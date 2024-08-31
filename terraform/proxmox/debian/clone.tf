@@ -1,35 +1,49 @@
-resource "proxmox_vm_qemu" "debian-vm-1" {
-    
-    target_node = var.node # "pmx"
-    # vmid = "100"
-    name = var.vm_name # "debian-vm-1"
-    desc = var.vm_desc # "debian server"
+resource "proxmox_virtual_environment_vm" "debian-vm-1" {
+  name        = var.vm_name
+  description = var.vm_desc
+  node_name   = var.node
+  vm_id       = null  # Let Proxmox choose the VM ID
 
-    onboot = true 
+  agent {
+    enabled = true
+  }
 
-    clone = var.clone_template # "pckr-tmpl-debian-11"
+  cpu {
+    cores   = var.cpu_cores
+    sockets = var.cpu_sockets
+    type    = "host"
+  }
 
-    # VM System Settings
-    agent = 1
-    
-    # VM CPU Settings
-    cores = var.cpu_cores # 1
-    sockets = var.cpu_sockets # 1
-    cpu = "host"
-    
-    # VM Memory Settings
-    memory = var.memory # 2048
+  memory {
+    dedicated = var.memory
+  }
 
-    # VM Network Settings
-    network {
-        bridge = "vmbr0"
-        model  = "virtio"
+  network_device {
+    bridge = "vmbr0"
+    model  = "virtio"
+  }
+
+  operating_system {
+    type = "l26"  # Linux 2.6+ kernel
+  }
+
+  initialization {
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
     }
+    user_account {
+      keys     = [var.ssh_public_key]
+      password = null
+      username = var.ciuser
+    }
+  }
 
-    # VM Cloud-Init Settings
-    os_type = "cloud-init"
-    ipconfig0 = "ip=dhcp"
-    ciuser = var.ciuser # s4m1nd
-    sshkeys = var.ssh_public_key 
+  clone {
+    vm_id = var.template_vm_id
+    full  = true
+  }
+
+  on_boot = true
 }
-

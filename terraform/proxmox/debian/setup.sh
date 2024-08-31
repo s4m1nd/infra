@@ -49,6 +49,7 @@ prompt_for_value proxmox_api_token_secret "Enter Proxmox API Token Secret" "secr
 prompt_for_value node "Enter target node" "pmx"
 prompt_for_value vm_name "Enter VM name" "vm-1"
 prompt_for_value vm_desc "Enter VM description" "desc"
+prompt_for_value template_vm_id "Enter VM ID" "100"
 prompt_for_value clone_template "Enter clone template name" "debian-11-cloudinit-template"
 prompt_for_value cpu_cores "Enter number of CPU cores" "1"
 prompt_for_value cpu_sockets "Enter number of CPU sockets" "1"
@@ -66,6 +67,7 @@ node = "${node}"
 vm_name = "${vm_name}"
 vm_desc = "${vm_desc}"
 clone_template = "${clone_template}"
+template_vm_id = "${template_vm_id}"
 cpu_cores = ${cpu_cores}
 cpu_sockets = ${cpu_sockets}
 memory = ${memory}
