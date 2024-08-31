@@ -46,4 +46,25 @@ resource "proxmox_virtual_environment_vm" "debian-vm-1" {
   }
 
   on_boot = true
+
+  lifecycle {
+    ignore_changes = [
+      initialization,
+    ]
+  }
+}
+
+resource "null_resource" "wait_for_ip" {
+  depends_on = [proxmox_virtual_environment_vm.debian-vm-1]
+
+  provisioner "local-exec" {
+    command = <<EOT
+      while [[ "$(terraform output -raw vm_ip_address)" == "IP not available yet" ]]; do
+        echo "Waiting for IP address..."
+        sleep 10
+        terraform refresh
+      done
+      echo "VM IP address: $(terraform output -raw vm_ip_address)"
+    EOT
+  }
 }
