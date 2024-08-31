@@ -9,7 +9,7 @@ source "proxmox-iso" "debian-11" {
   template_description    = "Debian 11 Bullseye Packer Template -- Created: ${formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())}"
   # vm_id                   = var.vmid
   os                      = "l26"
-  cpu_type                = var.cpu_type
+  # cpu_type                = var.cpu_type
   sockets                 = "1"
   cores                   = var.cores
   memory                  = var.memory

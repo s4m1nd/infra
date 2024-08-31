@@ -31,32 +31,5 @@ resource "proxmox_vm_qemu" "debian-vm-1" {
     ipconfig0 = "ip=dhcp"
     ciuser = var.ciuser # s4m1nd
     sshkeys = var.ssh_public_key 
-
 }
 
-provisioner "remote-exec" {
-        inline = [
-            "echo $(hostname -I | cut -d' ' -f1) > /tmp/vm_ip"
-        ]
-
-        connection {
-            type        = "ssh"
-            user        = var.ciuser
-            private_key = file("~/.ssh/id_ed25519")  # Adjust this path to your SSH private key
-            host        = self.ssh_host
-        }
-    }
-
-    provisioner "local-exec" {
-        command = "scp -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${var.ciuser}@${self.ssh_host}:/tmp/vm_ip ./vm_ip"
-    }
-}
-
-data "local_file" "vm_ip" {
-    filename = "${path.module}/vm_ip"
-    depends_on = [proxmox_vm_qemu.debian-vm-1]
-}
-
-output "vm_ip" {
-    value = trimspace(data.local_file.vm_ip.content)
-}
